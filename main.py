@@ -1,43 +1,48 @@
 def main():
+    #Main function to generate a report of the book
     book_path = "books/frankenstein.txt"
     text = get_book_text(book_path)
     word_count = get_words_text(text)
-    dict_char = get_characters_count(text)
-    list_char = get_aggregated_words(text)
-    print(list_char)
+    char_count = get_characters_count(text)
+    sorted_char_count = get_sorted_char_count(char_count)
 
+    #Prints the report
+    print(f"--- Begin report of {book_path} ---")
+    print(f"{word_count} words found in the document")
+
+    for char_dict in sorted_char_count:
+        print(f"The '{char_dict['char']}' character was found '{char_dict['count']}' times")
+    print("--- End of report ---")
 
 def get_book_text(path):
+    #Reads and returns the text of the txt file
     with open(path) as f:
         return f.read()
     
-def get_words_text(words):
-    word_count = len(words.split())
-    return word_count
+def get_words_text(text):
+    #Counts the number of words in the text
+    return len(text.split())
 
-def get_characters_count(char):
-    dict_char = {}
-    lower_char_text = char.lower()
-    for i in lower_char_text:
-        if i in dict_char:
-            dict_char[i] += 1
+def get_characters_count(text):
+    #Counts the frequency of each character in the text
+    char_count = {}
+    for char in text.lower():
+        if char in char_count:
+            char_count[char] += 1
         else:
-            dict_char[i] = 1
-    return dict_char
+            char_count[char] = 1
+    return char_count
 
 def sort_on(val):
+    #Fuction for sorting dictionnaries by count value
     return val["count"]
 
-def get_aggregated_words(aggr):
-    dict_char = {}
-    lower_char_text = aggr.lower()
-    for i in lower_char_text:
-        if i.isalpha():
-            if i in dict_char:
-                dict_char[i] += 1
-            else:   
-                dict_char[i] = 1
-    list_char = [{"char": key,"count": value} for key, value in dict_char.items()]
+def get_sorted_char_count(char_count):
+    #Creates a list of dictionnaries for alphabetical characters
+    list_char = [
+        {"char": char,"count": count}
+        for char, count in char_count.items()
+        if  char.isalpha()]
     list_char.sort(reverse=True, key=sort_on)
     return list_char
 
