@@ -25,6 +25,9 @@ def get_characters_count(char):
             dict_char[i] = 1
     return dict_char
 
+def sort_on(val):
+    return val["count"]
+
 def get_aggregated_words(aggr):
     dict_char = {}
     lower_char_text = aggr.lower()
@@ -35,7 +38,7 @@ def get_aggregated_words(aggr):
             else:   
                 dict_char[i] = 1
     list_char = [{"char": key,"count": value} for key, value in dict_char.items()]
-    list_char.sort(key=lambda x: x['count'], reverse=True)
+    list_char.sort(reverse=True, key=sort_on)
     return list_char
 
 
